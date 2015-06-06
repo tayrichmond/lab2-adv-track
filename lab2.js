@@ -53,7 +53,7 @@ function assert(expression, failureMessage) {
 function Blob() {
   this.hoursInTown = 0;
   this.consumption = function(population) {
-    for (var i = 1, peopleEaten = 0; peopleEaten < this.population; i++) {
+    for (var i = 1, peopleEaten = 0; peopleEaten < population; i++) {
       peopleEaten += i;
       this.hoursInTown++;
     }
@@ -66,9 +66,6 @@ var blob = new Blob();
 var hoursSpentInDowington = blob.consumption(1000); // TODO: assign me the value of the
                            // above calculation (how long it took
                            // the blob to eat Dowington)
-
-
-
 // Now, write a method that takes a population for an arbitrary
 // town, and the starting consumption rate, and returns the number
 // of hours the blob needs to ooze its way through that town.
@@ -88,11 +85,10 @@ assert(blob.hoursToOoze(0, 1) === 0, 'no people means no time needed.');
 assert(blob.hoursToOoze(1000, 1) === hoursSpentInDowington,
   'hoursSpentInDowington should match hoursToOoze\'s result for 1000');
 
-
 // TODO: write three more assertions like the two above, testing out
 // the hoursToOoze method.
 assert(blob.hoursToOoze(2000, 2) === hoursSpentInDowington,
-  "the population is double, but the rate is double as well");
+  'the population is double, but the rate is double as well');
 assert(blob.hoursToOoze(3000, 3) === hoursSpentInDowington,
   "it didn't work with a rate of 3");
 assert(blob.hoursToOoze(4000, 4) === hoursSpentInDowington,
@@ -112,15 +108,15 @@ var hello = {
 // speak, and method (that you'll place on the prototype) called
 // sayHello.
 
-function SentientBeing (homePlanet, language) {
+function SentientBeing(homePlanet, language) {
   this.homePlanet = homePlanet;
   this.language = language;
 }
 
 // sb is a SentientBeing object
-function sayHello (sb) {
+function sayHello(sb) {
 
-  console.log(hello[this.language])
+  console.log(hello[this.language]);
 
   return hello[sb.language];
 
@@ -146,7 +142,7 @@ function Klingon() {
 Klingon.prototype = new SentientBeing();
 
 function Romulan() {
-  this.homePlanet = "Romulus";
+  this.homePlanet = 'Romulus';
   this.language = 'romulan';
 }
 
@@ -185,30 +181,40 @@ function lastLetterSort(stringArray) {
     // this byLastLetter function is a "compare function"
     // And check out the "comparing strings" section  here:
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
-    var aLastLetter = a.charAt(a.length - 1),
-    bLastLetter = b.charAt(b.length - 1);
+    var aLastLetter = a.charAt(a.length - 1);
+    var bLastLetter = b.charAt(b.length - 1);
 
-    return aLastLetter - bLastLetter;
+    return aLastLetter.charCodeAt(0) - bLastLetter.charCodeAt(0);
   }
-  stringArray.sort(byLastLetter);
+  return stringArray.sort(byLastLetter);
 }
+
+console.log(lastLetterSort(['hello', 'bye', 'fart']));
+assert(lastLetterSort(['hello', 'bye', 'fart']) === ['bye', 'hello', 'fart'],
+  'Should sort by last letter');
 
 function sumArray(numberArray) {
   var sum = 0;
-  function addArray(currentValue, index, array) {
+  function addArray(currentValue) {
     sum += currentValue;
     return sum;
   }
-  sum = numberArray.forEach(addArray);
 
+  numberArray.forEach(addArray);
   return sum;
 }
+console.log(sumArray([2, 4, 5, 90]));
+assert(sumArray([2, 4, 5, 90]) === 101, 'Numbers were not added');
 
 function sumSort(arrayOfArrays) {
-  arrayOfArrays.sort(function(a, b) {
+  return arrayOfArrays.sort(function(a, b) {
     return (sumArray(a)) - (sumArray(b));
   });
 }
+
+console.log(sumSort([[1, 2, 3], [2, 4, 6], [8, 0]]));
+assert(sumSort([[1, 2, 3], [2, 4, 6], [8, 0]]) === [[1, 2, 3], [8, 0], [2, 4, 6]],
+  'Arrays were not sortted correctly');
 
 //*********************************************************
 // PROBLEM 4: Cleanup: 10 points
